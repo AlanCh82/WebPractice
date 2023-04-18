@@ -1,6 +1,6 @@
 let mapArray,ctx,currentImgMain;
 let imgMountain,imgMain,imgEnemy;
-const gridLength=100;
+const gridLength=50;
 function loadImages(sources, callback) {
     var images = {};
     var loadedImages = 0;
@@ -25,21 +25,29 @@ var sources = {
 };
 $(function(){
     mapArray=[
-        [0,0,0,1,1,1,0,1],
-        [0,0,1,1,3,1,0,1],
-        [0,0,0,1,0,0,0,1],
-        [0,1,1,0,0,1,1,1],
-        [0,1,0,0,0,0,1,0],
-        [0,0,0,0,1,0,0,0],
-        [0,0,1,1,1,0,0,1],
-        [3,1,1,0,0,0,0,2]
+        [0,0,0,1,1,1,0,1,0,0,1,1,1,0,1,1],
+        [0,0,1,1,3,1,0,1,0,0,0,0,1,0,0,1],
+        [0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,3],
+        [0,1,1,0,0,1,1,0,0,0,0,1,0,0,1,1],
+        [0,1,0,0,0,0,1,0,0,0,1,0,0,0,1,0],
+        [0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0],
+        [1,0,1,4,5,0,0,1,0,0,0,0,0,0,0,0],
+        [3,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1],
+        [0,0,0,1,0,1,0,1,0,0,0,0,1,0,0,1],
+        [0,0,1,1,0,1,0,1,0,0,4,5,3,0,0,1],
+        [0,1,4,5,0,0,0,1,0,0,1,0,0,0,0,1],
+        [0,1,0,0,0,0,1,1,0,0,1,0,1,0,0,1],
+        [0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1],
+        [0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
+        [0,0,1,0,1,3,0,1,0,0,0,0,0,0,0,1],
+        [3,1,1,0,1,0,0,1,1,0,0,0,0,0,0,2]
     ];
     ctx=$("#myCanvas")[0].getContext("2d");
     imgMain=new Image();
     imgMain.src="images/spriteSheet.png";
     currentImgMain={"x":0,"y":0};
     imgMain.onload=function(){
-        ctx.drawImage(imgMain,0,0,48,48,currentImgMain.x+20,currentImgMain.y+15,80,85);
+        ctx.drawImage(imgMain,0,0,48,48,currentImgMain.x+4,currentImgMain.y+3,46,47);
     };
     loadImages(sources,function(images){
         for(var x in mapArray){
@@ -49,6 +57,9 @@ $(function(){
                 }
                 else if(mapArray[x][y]==3){
                     ctx.drawImage(images.enemy,0,192,48,48,y*gridLength,x*gridLength,gridLength,gridLength);
+                }
+                else if(mapArray[x][y]==4){
+                    ctx.drawImage(images.mountain,32.3,192.7,32,32,y*gridLength,x*gridLength,2*gridLength,gridLength);
                 }
             }
         }
@@ -97,7 +108,7 @@ $(document).on("keydown",function(event){
         default:
             return;
     }
-    if(targetImg.x<=700&&targetImg.x>=0&&targetImg.y<=700&&targetImg.y>=0){
+    if(targetImg.x<=750&&targetImg.x>=0&&targetImg.y<=750&&targetImg.y>=0){
         targetBlock.x=targetImg.y/gridLength;
         targetBlock.y=targetImg.x/gridLength;
     }
@@ -113,15 +124,17 @@ $(document).on("keydown",function(event){
                 currentImgMain.x=targetImg.x;
                 currentImgMain.y=targetImg.y;
                 break;
-            case 1://有障礙物(不可移動)
+            case 1:
+            case 4:
+            case 5:
                 $("#talkBox").text("有山");
                 break;
-            case 2://終點(可移動)
+            case 2:
                 $("#talkBox").text("抵達終點");
                 currentImgMain.x=targetImg.x;
                 currentImgMain.y=targetImg.y;
                 break;
-            case 3://敵人(不可移動)
+            case 3:
                 $("#talkBox").text("哈摟");
                 break;
         }
@@ -129,5 +142,5 @@ $(document).on("keydown",function(event){
     else{
         $("#talkBox").text("邊界");
     }
-    ctx.drawImage(imgMain,cutImagePositionX,cutImagePositionY,48,48,currentImgMain.x+20,currentImgMain.y+15,80,85);
+    ctx.drawImage(imgMain,cutImagePositionX,cutImagePositionY,48,48,currentImgMain.x+4,currentImgMain.y+3,46,47);
 });
