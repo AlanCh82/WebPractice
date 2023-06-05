@@ -1,0 +1,11 @@
+#myVideo{
+    border: 1px black solid;
+}
+#progressBar{
+    width: 280px;
+}
+#choose{
+    width:300px;
+    height: 480px;
+    border: 1px black solid;
+}
